@@ -19,13 +19,14 @@ class VMState
   end
 
   def finished?
-    self.ip > self.code.length
+    self.ip >= self.code.length
   end
 
   def print
     puts "Registers:"
     puts [0,1,2,3].map{|i| "      R#{i}|"}.join 
-    puts [0,1,2,3].map{|i| sprintf("%08d", registers[i]) + "|"}.join 
+    puts [0,1,2,3].map{|i| sprintf("% 8d", registers[i]) + "|"}.join
+    puts "Next instruction: [#{self.code[self.ip].join(', ')}]"
   end
 
 end

@@ -6,25 +6,45 @@ module InstructionSet
 
   def set(source_register, value)
     self.registers[source_register] = value
+    increment_pointer
   end
 
   def jmp(position)
     self.ip = position
   end
 
+  def jmpr(position)
+    self.ip += position
+  end
+
   def jmpz(position)
-    if self.register[2] == 0
+    if self.registers[2] == 0
       jmp(position)
+    else
+      increment_pointer
     end
   end
 
+  def jmpzr(position)
+    if self.registers[2] == 0
+      jmpr(position)
+    else
+      increment_pointer
+    end
+  end
+
+  def ret
+    puts "The code returned: #{self.registers[0]}"
+    increment_pointer
+  end
+
   def mod
-    self.register[2] = self.register[0] % self.register[1]
+    self.registers[2] = self.registers[0] % self.registers[1]
     increment_pointer
   end
 
   def div
-    self.register[2] = self.register[0] / self.register[1]
+    self.registers[2] = self.registers[0] / self.registers[1]
     increment_pointer
   end
 
