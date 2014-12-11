@@ -7,9 +7,10 @@ class ProgramLoader
     @instructions = code.each_line.map{ |l| decoder.decode_instruction(l) }
   end
 
-  def run_program(*register_values, opts)
-    if !opts.is_a? Hash
-      register_values.push(opts)
+  def run_program(*register_values)
+    if register_values.last.is_a? Hash
+      opts = register_values.pop
+    else
       opts = {}
     end
     vm_state = VMState.new

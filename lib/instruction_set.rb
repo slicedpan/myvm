@@ -51,4 +51,68 @@ module InstructionSet
   def nop
     increment_pointer
   end
+
+  def load
+    self.registers[0] = self.memory[self.registers[1]]
+    increment_pointer
+  end
+
+  def store
+    self.memory[self.registers[1]] = self.registers[0]
+    increment_pointer
+  end
+
+  def add
+    self.registers[2] = self.registers[0] + self.registers[1]
+    increment_pointer
+  end
+
+  def sub
+    self.registers[2] = self.registers[0] - self.registers[1]
+    increment_pointer
+  end
+
+  def mul
+    self.registers[2] = self.registers[0] * self.registers[1]
+    increment_pointer
+  end
+
+  def write
+    output_buffer.push(registers[0])
+    increment_pointer
+  end
+
+  def clrbuf
+    output_buffer.clear
+    increment_pointer
+  end
+
+  def read
+    self.registers[0] = self.input_buffer[self.input_pointer]
+    self.input_pointer += 1
+    increment_pointer
+  end
+
+  def rewind
+    self.input_pointer = 0
+    increment_pointer
+  end
+
+  def output
+    tmp = []
+    self.output_buffer.each do |v|
+      break if v == 0
+      tmp.push(v)
+    end
+    puts tmp.pack('U*')
+    increment_pointer
+  end
+
+  def input
+    str = gets
+    self.input_buffer.clear
+    str.unpack('U*').concat([0]).each{ |v| self.input_buffer.push(v) }
+    increment_pointer
+  end
+
 end
